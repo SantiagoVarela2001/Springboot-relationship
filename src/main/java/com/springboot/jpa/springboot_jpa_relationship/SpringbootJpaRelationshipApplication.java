@@ -34,7 +34,7 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner{
 
 	@Transactional
 	public void oneToMany(){
-		Client client = new Client("Fran", "Moraz");
+		Client client = new Client("Fran", "Moras");
 
 		Address address1 = new Address("El Verjel", 1234);
 		Address address2 = new Address("Vasco de Gama", 9875);
