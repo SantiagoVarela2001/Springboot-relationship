@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringbootJpaRelationshipApplication<springboot-jpa-relationship>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.springboot.jpa.springboot_jpa_relationship.SpringbootJpaRelationshipApplication",
+            "projectName": "springboot-jpa-relationship",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
