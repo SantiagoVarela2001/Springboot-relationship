@@ -30,7 +30,29 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		oneToManyFindById();
+		removeAddress();
+	}
+
+	@Transactional // en aplicaciones web esto esta bien, no hay que agregar lo de trans en properties
+	public void removeAddress(){
+		Client client = new Client("Fran", "Morass");
+
+		Address address1 = new Address("El Verjel", 1234);
+		Address address2 = new Address("Vasco de Gama", 9875);
+
+		client.getAddresses().add(address1);
+		client.getAddresses().add(address2);
+
+		clientRepository.save(client);
+
+		System.out.println(client);
+
+		Optional<Client> optionalClient = clientRepository.findById(3L); //solo devuelve el cliente, no las direcciones
+		optionalClient.ifPresent(c ->{
+			c.getAddresses().remove(address1); // borrarlo del Array list
+			clientRepository.save(c); //guardar los cambios
+			System.out.println(c);
+		});
 	}
 
 	@Transactional
@@ -43,7 +65,7 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner{
 	
 			client.setAddresses(Arrays.asList(address1,address2));
 
-			clientRepository.save(client);
+			clientRepository.save(client); 
 	
 			System.out.println(client);
 		});
