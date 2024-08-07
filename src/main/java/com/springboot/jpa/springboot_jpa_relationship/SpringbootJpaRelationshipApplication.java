@@ -1,6 +1,8 @@
 package com.springboot.jpa.springboot_jpa_relationship;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,50 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		removeAddress();
+		oneToManyInvoiceBidireccional();
+	}
+
+	@Transactional
+	public void oneToManyInvoiceBidireccional(){
+		Client client = new Client("Fran", "Morass");
+
+		Invoice invoice1 = new Invoice("compras de la casa", 5000L);
+		Invoice invoice2 = new Invoice("compras de oficina", 8000L);
+
+		List<Invoice> invoices = new ArrayList<>();
+		invoices.add(invoice1);
+		invoices.add(invoice2);
+		client.setInvoices(invoices);
+
+		invoice1.setClient(client);
+		invoice2.setClient(client);
+
+		clientRepository.save(client);
+
+		System.out.println(client);
+	}
+
+	@Transactional
+	public void removeAddressFindById(){
+		Optional<Client> optionalClient = clientRepository.findById(2L);
+		optionalClient.ifPresent(client ->{
+
+			Address address1 = new Address("El Verjel", 1234);
+			Address address2 = new Address("Vasco de Gama", 9875);
+	
+			client.setAddresses(Arrays.asList(address1,address2));
+
+			clientRepository.save(client); 
+	
+			System.out.println(client);
+
+			Optional<Client> optionalClient2 = clientRepository.findOne(2L); //solo devuelve el cliente, no las direcciones
+			optionalClient2.ifPresent(c ->{
+			c.getAddresses().remove(address2); // borrarlo del Array list
+			clientRepository.save(c); //guardar los cambios
+			System.out.println(c);
+		});
+		});
 	}
 
 	@Transactional // en aplicaciones web esto esta bien, no hay que agregar lo de trans en properties

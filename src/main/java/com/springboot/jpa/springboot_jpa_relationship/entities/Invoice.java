@@ -19,8 +19,8 @@ public class Invoice {
     private String description;
     private Long total;
 
-    @ManyToOne
     @JoinColumn(name = "client_id") //cambiar el nombre de la columna
+    @ManyToOne
     private Client client;
  
     public Invoice() {
@@ -60,7 +60,7 @@ public class Invoice {
 
     @Override
     public String toString() {
-        return "{id=" + id + ", description=" + description + ", total=" + total + ", client=" + client + "}";
+        return "{id=" + id + ", description=" + description + ", total=" + total + "}";
     }
 
     

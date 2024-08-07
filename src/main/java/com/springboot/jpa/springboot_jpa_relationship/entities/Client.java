@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,18 +27,20 @@ public class Client {
     private String lastname;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    //@JoinColumn(name = "client_id") //si no lo agregamos hace una tabla intermedia
-    @JoinTable(
-        name = "tbl_clientes_to_direcciones", 
-        joinColumns = @JoinColumn(name = "id_cliente"),
-        inverseJoinColumns = @JoinColumn(name = "id_direcciones"),
-        uniqueConstraints = @UniqueConstraint(columnNames = {"id_direcciones"}))
+    // @JoinColumn(name = "client_id") //si no lo agregamos hace una tabla
+    // intermedia
+    @JoinTable(name = "tbl_clientes_to_direcciones", joinColumns = @JoinColumn(name = "id_cliente"), inverseJoinColumns = @JoinColumn(name = "id_direcciones"), uniqueConstraints = @UniqueConstraint(columnNames = {
+            "id_direcciones" }))
     private List<Address> addresses;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client") //se estructura la relacion
+    private List<Invoice> invoices;
 
     public Client() {
         this.addresses = new ArrayList<>();
+        this.invoices = new ArrayList<>();
     }
-    
+
     public Client(String name, String lastname) {
         this.addresses = new ArrayList<>();
         this.name = name;
@@ -47,18 +50,23 @@ public class Client {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public String getLastname() {
         return lastname;
     }
+
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
@@ -71,11 +79,17 @@ public class Client {
         this.addresses = addresses;
     }
 
+    
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+    
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+    
     @Override
     public String toString() {
-        return "Client [id=" + id + ", name=" + name + ", lastname=" + lastname + ", addresses=" + addresses + "]";
+        return "Client [id=" + id + ", name=" + name + ", lastname=" + lastname +", invoices = " + invoices + ", addresses=" + addresses + "]";
     }
-
-   
-
 }
